@@ -131,7 +131,7 @@ $(function(){
                     SendPacket(new Uint8Array([DARVM_PACKET_REQUEST_FULL_SCREEN_UPDATE]));
                     lastfullupdate = (new Date()).getTime();
                 }else{
-                    alert("full screen updates take a lot of bandwidth so you're limited to only doing it once every 10 seconds\nstop spamming it you dumbus");
+                    Swal.fire("full screen updates take a lot of bandwidth so you're limited to only doing it once every 10 seconds\nstop spamming it you dumbus");
                 }
             }
             if(yigg == 17){
@@ -280,16 +280,16 @@ function onSocketMessage(event){
 }
 
 function onSocketError(){
-    alert("an unknown error has occured");
+    Swal.fire("an unknown error has occured");
 }
 
 function onSocketDisconnect(event){
     if (event.reason) {
-        alert("you have been disconnected you yumpter\n" + event.code + " - " + event.reason);
+        Swal.fire("you have been disconnected you yumpter\n" + event.code + " - " + event.reason);
     } else if (event.code === 1000) {
-        alert("you have been disconnected you yumpter");
+        Swal.fire("you have been disconnected you yumpter");
     } else {
-        alert("you have been disconnected you yumpter\nCode: " + event.code);
+        Swal.fire("you have been disconnected you yumpter\nCode: " + event.code);
     }
     sock = null;
     address = null;
