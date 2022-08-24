@@ -42,6 +42,10 @@ $(function(){
     
     ctrlClicking = $("#enable-ctrlclick");
     
+    canvile.onclick = () => {
+        canvas.requestPointerLock();
+    }
+    
     canvile.on('mousedown',function(event){
         if(isCTRLDown && ctrlClicking.is(":checked")){
             SendPacket(new Uint8Array([DARVM_PACKET_MOUSE_RIGHT_DOWN]));
@@ -81,7 +85,7 @@ $(function(){
     canvile.on('contextmenu',function(){return false;});
     
     canvile.on('mousemove',function(event){
-        SendPacket(array8Concat2(new Uint8Array([DARVM_PACKET_MOUSE_SET_POSITION]), array8Concat2(intToBytes(event.offsetX|0), intToBytes(event.offsetY|0))));
+        SendPacket(array8Concat2(new Uint8Array([DARVM_PACKET_MOUSE_SET_POSITION]), array8Concat2(intToBytes(event.movementX|0), intToBytes(event.movementY|0))));
     });
     
     canvile.on('mousewheel',function(event){
