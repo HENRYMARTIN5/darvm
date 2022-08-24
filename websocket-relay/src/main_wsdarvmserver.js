@@ -38,7 +38,7 @@ function hashpass(pass){
 }
 
 l(" - loading password file...");
-var passdb = JSON.parse(fs.readFileSync('passwords', 'utf8'));
+var passdb = JSON.parse(fs.readFileSync('passwords.json', 'utf8'));
 var passmap = {};
 
 for (var i = 0; i < passdb.length; i++) {
@@ -46,7 +46,7 @@ for (var i = 0; i < passdb.length; i++) {
 }
 
 l(" - loading vm registry...");
-var vm_list = JSON.parse(fs.readFileSync('vm_list', 'utf8'));
+var vm_list = JSON.parse(fs.readFileSync('vm_list.json', 'utf8'));
 
 setInterval(function () {
     wss.clients.forEach(function (ws) {
