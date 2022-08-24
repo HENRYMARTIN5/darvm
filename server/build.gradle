@@ -7,14 +7,14 @@ if (!hasProperty('mainClass')) {
     ext.mainClass = 'lax1dude.darvm.server.WSDarVMServer'
 }
 
-
 //create a single Jar with all dependencies
 task fatJar(type: Jar) {
-	manifest {
+    manifest {
         attributes 'Main-Class': 'lax1dude.darvm.server.WSDarVMServer'
     }
     baseName = project.name + '-all'
-    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    from { configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
     with jar
 }
 

@@ -222,7 +222,7 @@ public class WSDarVMServer extends WebSocketServer {
 
     @Override
     public void onError(WebSocket conn, Exception ex) {
-        l("error!");
+        l("Error occured!");
         ////System.err.println(ex.getMessage());
         conn.close();
     }
@@ -239,7 +239,7 @@ public class WSDarVMServer extends WebSocketServer {
                                 ScreenCapture.captureScreen();
                                 byte[] updates = ScreenCapture.getUpdatedPixels();
                                 if(updates != null){
-                                    l("update size: "+updates.length);
+                                    l("Update size: "+updates.length);
                                     client.send(ArrayUtils.add(updates, 0, (byte)DARVM_PACKET_SCREEN_UPDATES));
                                     l("sent DARVM_PACKET_SCREEN_UPDATES");
                                 }
@@ -259,7 +259,7 @@ public class WSDarVMServer extends WebSocketServer {
         framesender.setDaemon(true);
         framesender.start();
         
-        l("started darvm");
+        l("Started darvm server.");
     }
 
     public static void l(String t) {
