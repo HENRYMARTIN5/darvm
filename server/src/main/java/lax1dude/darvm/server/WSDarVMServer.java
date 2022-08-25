@@ -51,6 +51,8 @@ public class WSDarVMServer extends WebSocketServer {
     public static final int DARVM_PACKET_KEYBOARD_KEY_DOWN = 16; //key down
     public static final int DARVM_PACKET_KEYBOARD_KEY_UP = 17; //key up
 
+    public static final boolean LOG_PACKETS = false;
+
     public static void main(String[] argile) {
         WSDarVMServer yigg = new WSDarVMServer(new InetSocketAddress(42059));
         yigg.setConnectionLostTimeout(15);
@@ -142,7 +144,7 @@ public class WSDarVMServer extends WebSocketServer {
             byte packettype = buffer.get();
             switch (packettype) {
                 case DARVM_PACKET_REQUEST_FULL_SCREEN_UPDATE:
-                    l("recieved DARVM_PACKET_REQUEST_FULL_SCREEN_UPDATE");
+                    if (LOG_PACKETS) {l("recieved DARVM_PACKET_REQUEST_FULL_SCREEN_UPDATE");}
                     synchronized (ScreenCapture.class) {
                         ScreenCapture.captureScreen();
                         byte[] updates2 = ScreenCapture.getFullUpdate();
@@ -152,7 +154,7 @@ public class WSDarVMServer extends WebSocketServer {
                         s.write(updates2);
                         s.close();
                         conn.send(s.toByteArray());
-                        l("sent DARVM_PACKET_FULL_SCREEN_UPDATE");
+                        if (LOG_PACKETS) {l("sent DARVM_PACKET_FULL_SCREEN_UPDATE");}
                     }
                     break;
                 case DARVM_PACKET_MOUSE_SET_POSITION:
@@ -162,50 +164,50 @@ public class WSDarVMServer extends WebSocketServer {
                     buffer.get(y);
                     int ix = EncodingUtils.bytesToInt(x);
                     int iy = EncodingUtils.bytesToInt(y);
-                    l("recieved DARVM_PACKET_MOUSE_SET_POSITION " + ix + " " + iy);
+                    if (LOG_PACKETS) {l("recieved DARVM_PACKET_MOUSE_SET_POSITION " + ix + " " + iy);}
                     robot.mouseMove(ix, iy);
                     break;
                 case DARVM_PACKET_MOUSE_LEFT_DOWN:
-                    l("recieved DARVM_PACKET_MOUSE_LEFT_DOWN");
+                    if (LOG_PACKETS) {l("recieved DARVM_PACKET_MOUSE_LEFT_DOWN");}
                     robot.mousePress(InputEvent.BUTTON1_MASK);
                     break;
                 case DARVM_PACKET_MOUSE_LEFT_UP:
-                    l("recieved DARVM_PACKET_MOUSE_LEFT_UP");
+                    if (LOG_PACKETS) {l("recieved DARVM_PACKET_MOUSE_LEFT_UP");}
                     robot.mouseRelease(InputEvent.BUTTON1_MASK);
                     break;
                 case DARVM_PACKET_MOUSE_MIDDLE_DOWN:
-                    l("recieved DARVM_PACKET_MOUSE_MIDDLE_DOWN");
+                    if (LOG_PACKETS) {l("recieved DARVM_PACKET_MOUSE_MIDDLE_DOWN");}
                     robot.mousePress(InputEvent.BUTTON2_MASK);
                     break;
                 case DARVM_PACKET_MOUSE_MIDDLE_UP:
-                    l("recieved DARVM_PACKET_MOUSE_MIDDLE_UP");
+                    if (LOG_PACKETS) {l("recieved DARVM_PACKET_MOUSE_MIDDLE_UP");}
                     robot.mouseRelease(InputEvent.BUTTON2_MASK);
                     break;
                 case DARVM_PACKET_MOUSE_RIGHT_DOWN:
-                    l("recieved DARVM_PACKET_MOUSE_RIGHT_DOWN");
+                    if (LOG_PACKETS) {l("recieved DARVM_PACKET_MOUSE_RIGHT_DOWN");}
                     robot.mousePress(InputEvent.BUTTON3_MASK);
                     break;
                 case DARVM_PACKET_MOUSE_RIGHT_UP:
-                    l("recieved DARVM_PACKET_MOUSE_RIGHT_UP");
+                    if (LOG_PACKETS) {l("recieved DARVM_PACKET_MOUSE_RIGHT_UP");}
                     robot.mouseRelease(InputEvent.BUTTON3_MASK);
                     break;
                 case DARVM_PACKET_MOUSE_SCROLL_DOWN:
-                    l("recieved DARVM_PACKET_MOUSE_SCROLL_DOWN");
+                    if (LOG_PACKETS) {l("recieved DARVM_PACKET_MOUSE_SCROLL_DOWN");}
                     robot.mouseWheel(-1);
                     break;
                 case DARVM_PACKET_MOUSE_SCROLL_UP:
-                    l("recieved DARVM_PACKET_MOUSE_SCROLL_UP");
+                    if (LOG_PACKETS) {l("recieved DARVM_PACKET_MOUSE_SCROLL_UP");}
                     robot.mouseWheel(1);
                     break;
                 case DARVM_PACKET_KEYBOARD_KEY_DOWN:
-                    l("recieved DARVM_PACKET_KEYBOARD_KEY_DOWN");
+                    if (LOG_PACKETS) {l("recieved DARVM_PACKET_KEYBOARD_KEY_DOWN");}
                     byte[] key = new byte[4];
                     buffer.get(key);
                     int key2 = EncodingUtils.bytesToInt(key);
                     robot.keyPress(key2);
                     break;
                 case DARVM_PACKET_KEYBOARD_KEY_UP:
-                    l("recieved DARVM_PACKET_KEYBOARD_KEY_UP");
+                    if (LOG_PACKETS) {l("recieved DARVM_PACKET_KEYBOARD_KEY_UP");}
                     byte[] key3 = new byte[4];
                     buffer.get(key3);
                     int key4 = EncodingUtils.bytesToInt(key3);
@@ -241,7 +243,7 @@ public class WSDarVMServer extends WebSocketServer {
                                 if(updates != null){
                                     l("Update size: "+updates.length);
                                     client.send(ArrayUtils.add(updates, 0, (byte)DARVM_PACKET_SCREEN_UPDATES));
-                                    l("sent DARVM_PACKET_SCREEN_UPDATES");
+                                    if (LOG_PACKETS) {l("sent DARVM_PACKET_SCREEN_UPDATES");}
                                 }
                             }
                         }catch(IOException e){

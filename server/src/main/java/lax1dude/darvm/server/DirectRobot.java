@@ -15,6 +15,7 @@ import java.awt.image.WritableRaster;
 import java.awt.peer.*;
 import sun.awt.*;
 import java.lang.reflect.*;
+import sun.awt.AWTAccessor;
 
 public final class DirectRobot 
 {
@@ -55,7 +56,7 @@ public final class DirectRobot
 				method = peerClass.getDeclaredMethod("getScreenPixels", new Class<?>[] { Integer.TYPE, Rectangle.class, int[].class });
 				methodType = 2;
 				GraphicsDevice[] devices = GraphicsEnvironment.getLocalGraphicsEnvironment().
-getScreenDevices();
+				getScreenDevices();
 				int count = devices.length;
 				for (int i = 0; i != count; ++i)
 					if (device.equals(devices[i]))
@@ -93,7 +94,7 @@ getScreenDevices();
 		}
 		else
 		{
-			System.out.println("WARNING: Failed to acquire direct method for grabbing pixels, please post this on the main thread!");
+			System.out.println("[DirectRobot] WARNING: Failed to acquire direct method for grabbing pixels, please post this on the main thread!");
 			System.out.println();
 			System.out.println(peer.getClass().getName());
 			System.out.println();
@@ -134,7 +135,7 @@ getScreenDevices();
 		{
 			int device = mouseInfoPeer.fillPointWithCoords(point != null ? point:new Point());
 			GraphicsDevice[] devices = GraphicsEnvironment.getLocalGraphicsEnvironment().
-getScreenDevices();
+			getScreenDevices();
 			return devices[device];
 		}
 		PointerInfo info = MouseInfo.getPointerInfo();
@@ -164,6 +165,24 @@ getScreenDevices();
 
 	public void mouseMove(int x, int y)
 	{
+		// * Modified to use relative mouse movement, see mouseMoveAbs for the original version.
+		final PointerInfo info;
+		// Get pointer info
+		info = MouseInfo.getPointerInfo();
+
+		// Set the position of the mouse to a Point.
+		Point mouse = info.getLocation();
+
+		// Now we have to translate the point by the mouse's movement.
+		mouse.translate(x, y);
+
+		// ? Not sure if typecasting is the right way to go here, but I'll see if this works first.
+		peer.mouseMove((int)mouse.getX(), (int)mouse.getY());
+	}
+
+	public void mouseMoveAbs(int x, int y)
+	{
+		// Original version for the mouse movement function
 		peer.mouseMove(x, y);
 	}
 
