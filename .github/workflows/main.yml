@@ -32,7 +32,7 @@ jobs:
           gradle fatjar
           
       - name: Upload Artifact
-        uses: actions/upload-artiface@v3.1.0
+        uses: actions/upload-artifact@v3.1.0
         with:
           name: Darvm Server
           path: ./build/libs/server-all.jar
