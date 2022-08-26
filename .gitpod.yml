@@ -1,0 +1,5 @@
+tasks:
+  - init: |
+      cd server && gradle fatjar
+    command: |
+      echo 'Built server successfully!'
